@@ -1,0 +1,35 @@
+name: shcedule_appointmant
+description: A new Flutter application.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter_bloc: ^7.1.0
+  flutter_dotenv: ^5.0.0
+  equatable: ^2.0.3
+  image_picker: ^0.8.3+1
+  flutter_image_slideshow:
+    path: ./packages/flutter_image
+  table_calendar:
+    path: ./packages/table_calendar
+
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - .env
+    - assets/

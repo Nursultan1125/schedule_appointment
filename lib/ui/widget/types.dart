@@ -1,0 +1,1 @@
+typedef OnChangeText = void Function(String text);
