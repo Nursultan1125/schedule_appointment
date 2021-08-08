@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:image_picker/image_picker.dart';
 
-typedef OnUploadFile = void Function(XFile file);
+typedef OnUploadFile = void Function(File file);
 
 class SliderWidget extends StatefulWidget {
   final List<String> imagesUrls;
@@ -53,9 +53,10 @@ class _Slider extends State<SliderWidget> {
   Future uploadImg() async {
     final imageFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
+    File file = File(imageFile.path);
     setState(() {
-      uploadedImages.add(Image.file(File(imageFile.path)));
+      uploadedImages.add(Image.file(file));
     });
-    if (widget.onUploadFile != null) widget.onUploadFile(imageFile);
+    if (widget.onUploadFile != null) widget.onUploadFile(file);
   }
 }

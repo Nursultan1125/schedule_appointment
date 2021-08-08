@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shcedule_appointmant/bloc/calendar_bloc.dart';
-import 'package:shcedule_appointmant/data/repo/calender_state.dart';
+import 'package:shcedule_appointmant/bloc/events/calendar_event.dart';
+import 'package:shcedule_appointmant/bloc/states/calender_state.dart';
 import 'package:shcedule_appointmant/ui/widget/hours_widget.dart';
+import 'package:shcedule_appointmant/ui/widget/primary_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/utils.dart';
@@ -21,7 +23,6 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPage extends State<CalendarPage> {
-  DateTime selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class _CalendarPage extends State<CalendarPage> {
                       height: height * 0.16,
                       child: Center(
                         child: Text(
-                          "${DateFormat.yMMMMd("ru_RU").format(selectedDay)} 14:00",
+                          "${DateFormat.yMMMMd("ru_RU").format(state.selectedDay ?? DateTime.now())} 14:00",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -58,29 +59,25 @@ class _CalendarPage extends State<CalendarPage> {
                     height: 12,
                   ),
                   Calendar(
-                    selectedDay: selectedDay,
+                    selectedDay: state.selectedDay ?? DateTime.now(),
                     enabledDays: LinkedHashSet<DateTime>(
                       equals: isSameDay,
                       hashCode: getHashCode,
                     )..addAll(state.apartment.dates?.toSet()),
+                    onSelected: (DateTime day, DateTime focused) =>
+                        context.read<CalendarBloc>().add(SelectDayEvent(day)),
                   ),
                   HoursWidget(
-                    hours: [],
-                    onChange: (str) => print(str),
+                    hours: state.hours,
+                    onChange: (hour) => context.read<CalendarBloc>().add(SelectHourEvent(hour)),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(right: 8, left: 8),
-                    child: TextButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xFF744CD0))),
-                      child: Text(
-                        "Далее",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed(OrderRoute.orderPage),
-                    ),
+                  PrimaryButton(
+                    text: "Далее",
+                    onPressed: (){
+                      context.read<CalendarBloc>().add(ClickNextEvent());
+                      Navigator.of(context).pushNamed(OrderRoute.orderPage);
+                    },
+                    disabled: state.selectedHour == null,
                   ),
                 ],
               ),

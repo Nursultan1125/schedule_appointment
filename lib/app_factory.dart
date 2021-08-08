@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shcedule_appointmant/events/calendar_event.dart';
 
 import 'app.dart';
 import 'bloc/calendar_bloc.dart';
+import 'bloc/events/calendar_event.dart';
+import 'bloc/order_page_bloc.dart';
 import 'data/repo/fake_repo.dart';
 
 class AppFactory {
@@ -10,8 +11,14 @@ class AppFactory {
     FakeRepo repo = new FakeRepo();
     return MultiBlocProvider(
       providers: [
+        BlocProvider<OrderPageBloc>(
+          create: (context) => OrderPageBloc(repository: repo),
+        ),
         BlocProvider<CalendarBloc>(
-            create: (context)=>CalendarBloc(repository: repo)..add(GetApartmentEvent()))
+            create: (context) => CalendarBloc(
+                repository: repo,
+                orderPageBloc: BlocProvider.of<OrderPageBloc>(context))
+              ..add(GetApartmentEvent()))
       ],
       child: App(),
     );

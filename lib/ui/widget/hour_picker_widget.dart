@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class HourPickerWidget extends StatelessWidget {
   final TimeOfDay time;
+  final onChangeTime;
 
-  const HourPickerWidget({Key key, this.time}) : super(key: key);
+  const HourPickerWidget({Key key, this.time, this.onChangeTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,5 +48,6 @@ class HourPickerWidget extends StatelessWidget {
       context: context,
       initialTime: time,
     );
+    if(onChangeTime != null) onChangeTime(newTime);
   }
 }
