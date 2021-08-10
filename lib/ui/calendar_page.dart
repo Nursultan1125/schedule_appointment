@@ -48,7 +48,7 @@ class _CalendarPage extends State<CalendarPage> {
                       height: height * 0.16,
                       child: Center(
                         child: Text(
-                          "${DateFormat.yMMMMd("ru_RU").format(state.selectedDay ?? DateTime.now())} 14:00",
+                          "${DateFormat.yMMMMd("ru_RU").format(state.selectedDay ?? DateTime.now())} ${state.selectedHour??""}",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
